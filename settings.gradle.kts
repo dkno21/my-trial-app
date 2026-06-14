@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "poc"
+rootProject.name = "Ryusenpai"
 include(":app")
  
