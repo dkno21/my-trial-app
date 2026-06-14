@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "841143130242",
+    "project_id": "trial-apk",
+    "storage_bucket": "trial-apk.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841143130242:android:3079b46c7087ae8fdb3c9b",
+        "android_client_info": {
+          "package_name": "com.percobaan.me"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8NKHhFamrczuGi_6edWQQCaZ8dLwDDZE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
