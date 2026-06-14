@@ -29,9 +29,9 @@ android {
         create("release") {
             storeFile = rootProject.file("ryuki-senpai-key.jks")
             // Ini akan mengambil data dari GitHub Secrets
-            storePassword = System.getenv("KEY_STORE_PASSWORD")
-            keyAlias = System.getenv("ALIAS")
-            keyPassword = System.getenv("KEY_PASSWORD")
+            storePassword = System.getenv("satriya12")
+            keyAlias = System.getenv("my_alias")
+            keyPassword = System.getenv("satriya12")
         }
     }
 
