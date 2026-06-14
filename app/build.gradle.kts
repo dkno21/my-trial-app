@@ -16,25 +16,15 @@ android {
         versionName = "1.0"
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
-        signingConfigs {
+    signingConfigs {
         create("release") {
             storeFile = rootProject.file("ryuki-senpai-key.jks")
-            // Ganti nama di dalam kurung agar sesuai dengan nama di GitHub Secrets
-            storePassword = System.getenv("satriya12")
-            keyAlias = System.getenv("my-alias")
-            keyPassword = System.getenv("satriya12")
+            // Mengambil dari parameter -P yang dikirim via .yml
+            storePassword = project.findProperty("satriya12") as String? ?: ""
+            keyAlias = project.findProperty("my-alias") as String? ?: ""
+            keyPassword = project.findProperty("satriya12") as String? ?: ""
         }
     }
-
 
     buildTypes {
         getByName("release") {
@@ -46,7 +36,6 @@ android {
     applicationVariants.all {
         val variant = this
         variant.outputs.all {
-            // Memberi nama file output yang rapi
             val output = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
             output.outputFileName = "MyTrialApp.apk"
         }
@@ -57,8 +46,6 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
-
-    // Firebase
     implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
     implementation("com.google.firebase:firebase-firestore")
 }
