@@ -8,6 +8,15 @@ android {
     namespace = "com.percobaan.me"
     compileSdk = 34
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
     defaultConfig {
         applicationId = "com.percobaan.me"
         minSdk = 26
@@ -19,7 +28,6 @@ android {
     signingConfigs {
         create("release") {
             storeFile = rootProject.file("ryuki-senpai-key.jks")
-            // Mengambil dari parameter -P yang dikirim via .yml
             storePassword = project.findProperty("satriya12") as String? ?: ""
             keyAlias = project.findProperty("my-alias") as String? ?: ""
             keyPassword = project.findProperty("satriya12") as String? ?: ""
