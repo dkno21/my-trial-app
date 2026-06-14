@@ -27,8 +27,8 @@ android {
     }
 signingConfigs {
         create("release") {
-            // Mengambil data dari variabel lingkungan (GitHub Secrets)
-            storeFile = rootProject.file("ryuki-senpai-key.jks") // Pastikan file ini ada di root proyek
+            // Gunakan System.getenv("NAMA_VARIABEL")
+            storeFile = rootProject.file("ryuki-senpai-key.jks")
             storePassword = System.getenv("satriya12")
             keyAlias = System.getenv("my_alias")
             keyPassword = System.getenv("satriya12")
@@ -38,10 +38,8 @@ signingConfigs {
     buildTypes {
         getByName("release") {
             signingConfig = signingConfigs.getByName("release")
-            isMinifyEnabled = false 
         }
     }
-}
 
 android.applicationVariants.all {
     val variant = this
