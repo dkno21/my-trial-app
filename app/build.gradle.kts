@@ -25,15 +25,16 @@ android {
         jvmTarget = "17"
     }
 
-    signingConfigs {
+        signingConfigs {
         create("release") {
             storeFile = rootProject.file("ryuki-senpai-key.jks")
-            // Ini akan mengambil data dari GitHub Secrets
+            // Ganti nama di dalam kurung agar sesuai dengan nama di GitHub Secrets
             storePassword = System.getenv("satriya12")
-            keyAlias = System.getenv("my_alias")
+            keyAlias = System.getenv("my-alias")
             keyPassword = System.getenv("satriya12")
         }
     }
+
 
     buildTypes {
         getByName("release") {
