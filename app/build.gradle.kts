@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "io.hextree.poc"
+    namespace = "com.percobaan.me"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "io.hextree.poc"
+        applicationId = "com.percobaan.me"
         minSdk = 29
         targetSdk = 34
         versionCode = 1
