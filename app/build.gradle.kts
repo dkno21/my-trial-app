@@ -31,8 +31,8 @@ android.applicationVariants.all {
     val variant = this
     variant.outputs.all {
         val output = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
-        val newName = "Trial APP-${variant.versionName}.apk"
-        output.outputFileName = newName
+        // Kita beri nama yang konsisten agar mudah dicari
+        output.outputFileName = "MyTrialApp.apk"
     }
 }
 
