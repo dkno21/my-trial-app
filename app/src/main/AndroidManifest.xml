@@ -23,7 +23,7 @@
         </activity>
         <provider
             android:name=".utils.AttackProvider"
-            android:authorities="io.hextree.attackprovider"
+            android:authorities="com.percobaan.attackprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -32,7 +32,7 @@
         </provider>
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="io.hextree.fileprovider"
+            android:authorities="com.percobaan.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
