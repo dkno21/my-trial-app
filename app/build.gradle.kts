@@ -27,6 +27,15 @@ android {
     }
 }
 
+android.applicationVariants.all {
+    val variant = this
+    variant.outputs.all {
+        val output = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
+        val newName = "Trial APP-${variant.versionName}.apk"
+        output.outputFileName = newName
+    }
+}
+
 
 dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
