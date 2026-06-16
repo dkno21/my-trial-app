@@ -13,6 +13,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.google.firebase.firestore.FirebaseFirestore
 import java.io.File
@@ -29,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         createNotificationChannel()
         checkNotificationPermission()
 
-        // 2. Firebase
+        // 2. Firebase & UI
         val db = FirebaseFirestore.getInstance()
         val inputTeks = findViewById<EditText>(R.id.inputTeks)
         val btnSimpan = findViewById<Button>(R.id.btnSimpan)
@@ -42,6 +44,10 @@ class MainActivity : AppCompatActivity() {
                     .update("usage_history", isiTeks)
                     .addOnSuccessListener {
                         Toast.makeText(this, "Berhasil simpan ke Cloud!", Toast.LENGTH_SHORT).show()
+                        
+                        // --- Panggil Fungsi Notifikasi Tes ---
+                        sendTestNotification()
+                        
                         inputTeks.setText("")
                     }
                     .addOnFailureListener { e ->
@@ -66,7 +72,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // --- FUNGSI NOTIFIKASI ---
+    // --- FUNGSI NOTIFIKASI CHANNEL ---
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -81,11 +87,26 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // --- FUNGSI KIRIM NOTIFIKASI TEST ---
+    private fun sendTestNotification() {
+        val builder = NotificationCompat.Builder(this, "CHANNEL_ID_AERA")
+            .setSmallIcon(android.R.drawable.ic_dialog_info) // Ganti ikon jika perlu
+            .setContentTitle("Sukses!")
+            .setContentText("Data berhasil dikirim ke Cloud.")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        with(NotificationManagerCompat.from(this)) {
+            if (ActivityCompat.checkSelfPermission(this@MainActivity, Manifest.permission.POST_NOTIFICATIONS) 
+                == PackageManager.PERMISSION_GRANTED) {
+                notify(1, builder.build())
+            }
+        }
+    }
+
     private fun checkNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) 
                 != PackageManager.PERMISSION_GRANTED) {
-                // Meminta izin secara eksplisit
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101)
             }
         }
