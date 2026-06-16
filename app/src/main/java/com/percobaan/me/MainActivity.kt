@@ -24,12 +24,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.tampilan)
 
-        // Panggil semua fungsi startup
-        requestAllPermissions()
-        createNotificationChannel()
+        // 1. Inisialisasi Fitur
         checkAndCreateFolder()
+        createNotificationChannel()
+        checkNotificationPermission()
 
-        // Firebase Logic
+        // 2. Firebase
         val db = FirebaseFirestore.getInstance()
         val inputTeks = findViewById<EditText>(R.id.inputTeks)
         val btnSimpan = findViewById<Button>(R.id.btnSimpan)
@@ -41,54 +41,53 @@ class MainActivity : AppCompatActivity() {
                 db.collection("users").document("YpabdicodRZLzZ1vVRS5")
                     .update("usage_history", isiTeks)
                     .addOnSuccessListener {
-                        Toast.makeText(this, "Berhasil!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Berhasil simpan ke Cloud!", Toast.LENGTH_SHORT).show()
                         inputTeks.setText("")
                     }
-                    .addOnFailureListener { e -> 
-                        Toast.makeText(this, "Gagal: ${e.message}", Toast.LENGTH_SHORT).show() 
+                    .addOnFailureListener { e ->
+                        Toast.makeText(this, "Gagal: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
+            } else {
+                Toast.makeText(this, "Teks tidak boleh kosong!", Toast.LENGTH_SHORT).show()
             }
         }
 
-        btnHapus.setOnClickListener { inputTeks.setText("") }
-    }
-
-    private fun requestAllPermissions() {
-        val permissions = mutableListOf<String>()
-        
-        // Izin Notifikasi (Android 13+)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            permissions.add(Manifest.permission.POST_NOTIFICATIONS)
-        }
-        
-        // Izin Penyimpanan (Android 9 ke bawah)
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }
-
-        if (permissions.isNotEmpty()) {
-            ActivityCompat.requestPermissions(this, permissions.toTypedArray(), 100)
+        btnHapus.setOnClickListener {
+            inputTeks.setText("")
         }
     }
 
+    // --- FUNGSI FOLDER ---
     private fun checkAndCreateFolder() {
-        // Folder privat aplikasi selalu ada di getExternalFilesDir
         val folder = getExternalFilesDir(null)
         if (folder != null && !folder.exists()) {
             val created = folder.mkdirs()
-            Log.d("AppFolder", "Folder berhasil dibuat: $created")
+            Log.d("AppFolder", "Folder dibuat: $created")
         }
     }
 
+    // --- FUNGSI NOTIFIKASI ---
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 "CHANNEL_ID_AERA", 
                 "Update Info", 
                 NotificationManager.IMPORTANCE_DEFAULT
-            )
+            ).apply {
+                description = "Notifikasi dari Cloud"
+            }
             val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             manager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) 
+                != PackageManager.PERMISSION_GRANTED) {
+                // Meminta izin secara eksplisit
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101)
+            }
         }
     }
 }
